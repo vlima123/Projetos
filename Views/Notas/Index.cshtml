@@ -1,0 +1,69 @@
+﻿@model IEnumerable<ProjetoParaProjetos.Models.Nota>
+
+@{
+    ViewData["Title"] = "Index";
+     var categorias = new List<string> { "Front-End", "Trabalho", "Back-End","Data-Science", "Vestibular", "FullStack",
+"Computação", "Outros" };
+
+}
+
+<h1>Index</h1>
+<form asp-action="ProcurarPorCategoria">
+    <label for="categoria">Procurar por Categoria</label>
+    
+    <select name="categoria" id="categoria">
+        @foreach (var item in categorias)
+        {
+            <option name="categoria" value="@item">@item</option>
+        }
+    </select>
+<button type="submit">Procurar</button>
+
+
+</form>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Titulo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descricao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataCriacao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Categoria)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Titulo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descricao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataCriacao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Categoria)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.NotaId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.NotaId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.NotaId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

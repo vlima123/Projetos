@@ -1,0 +1,96 @@
+﻿@model IEnumerable<ProjetoParaProjetos.Models.Objetivos>
+
+@{
+    ViewData["Title"] = "Index";
+    var status = new List<string> { "Ativo", "Inativo" };
+    List<string> listaTipos = new List<string> { "Programação", "Data Science", "Vestibular", "Cloud", "Academia", "Outros"
+};
+
+}
+
+
+
+<h1>Index</h1>
+
+<form asp-action="ProcurarPorTipo">
+    <label for="tipo">Procurar por Tipo</label>
+    <select name="tipo" id="tipo">
+        <option value="">Selecione</option>
+        @foreach (var item in listaTipos)
+        {
+            <option name="tipo" value="@item">@item</option>
+        }
+    </select>
+
+    <button type="submit">Procurar</button>
+</form>
+
+<form asp-action="ProcurarPorStatus">
+    <label for="status">Procurar por Status</label>
+    <select name="status" id="tipo">
+        <option value="">Selecione</option>
+        @foreach (var item in status)
+        {
+            <option name="status" value="@item">@item</option>
+        }
+    </select>
+    <button type="submit">Procurar</button>
+</form>
+
+<form asp-action="Details">
+    <label for="">Procurar por Nome</label>
+    <select name="id" id="id">
+        @foreach (var item in Model)
+        {
+            <option name="id" value="@item.ObjetivosId">@item.Objetivo</option>
+        }
+    </select>
+    <button type="submit">Procurar</button>
+</form>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Objetivo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descricao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tipo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Objetivo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descricao)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Tipo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ObjetivosId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.ObjetivosId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ObjetivosId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

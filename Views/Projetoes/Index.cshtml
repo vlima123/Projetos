@@ -1,0 +1,247 @@
+﻿@model IEnumerable<ProjetoParaProjetos.Models.Projeto>
+
+@{
+    ViewData["Title"] = "Index";
+    var objetivo = ViewData["Objetivos"];
+
+    var projetosFinalizados = Model.Where(p => p.Status == "Finalizado").ToList();
+
+    var projetosAtivos = Model.Where(p => p.Status == "Ativo").ToList();
+
+    var projetosPausados = Model.Where(p => p.Status == "Pausado").ToList();
+
+    var contagemPausados = projetosPausados.Count() > 0;
+
+    var contagemFinalizados = projetosFinalizados.Count() > 0;
+
+    var contagemAtivos = projetosAtivos.Count() > 0;
+
+
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<form asp-action="Procurar">
+    <div class="form-group">
+        <label for="status" class="control-label">Filtrar por Status</label>
+        <select name="status" id="status" class="form-control">
+            <option value="">Selecione um Status</option>
+
+            <option name="status" value="Finalizado">Finalizado</option>
+            <option name="status" value="Ativo">Ativo</option>
+            <option name="status" value="Pausado">Pausado</option>
+
+        </select>
+        <button type="submit">Procurar</button>
+    </div>
+</form>
+<form asp-action="ProcurarCategoria">
+    <div class="form-group">
+        <label for="categoria" class="control-label">Filtrar por Categoria</label>
+        <select name="categoria" id="categoria" class="form-control">
+            <option value="">Selecione uma Categoria</option>
+            <option name="categoria" value="Front-End">Front-End</option>
+            <option name="categoria" value="Back-End">Back-End</option>
+            <option name="categoria" value="Data-Science">Data-Science</option>
+            <option name="categoria" value="FullStack">FullStack</option>
+        </select>
+        <button type="submit">Procurar</button>
+    </div>
+</form>
+
+<form asp-action="Details">
+    <div class="form-group">
+        <label for="" class="control-label">Procurar pelo nome</label>
+        <select name ="id" id="id" class="form-control">
+            <option value="">Selecione um Projeto</option>
+            @foreach (var item in Model)
+            {
+                <option name="id" value="@item.ProjetoId">@item.Nome</option>
+            }
+        </select>
+            <button type="submit">Procurar</button>
+    </div>
+
+
+</form>
+@if (contagemAtivos == true)
+{
+    
+<h1>Projetos Ativos</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descricao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataInicio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in projetosAtivos)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descricao)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DataInicio)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ProjetoId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.ProjetoId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ProjetoId">Delete</a>
+                    <form asp-action="Finalizar" method="post">
+                        <input type="hidden" name="id" value="@item?.ProjetoId" />
+                        <input type="submit" value="Finalizar" />
+                    </form>
+                    <form asp-action="Pausar" method="post">
+                        <input type="hidden" name="id" value="@item?.ProjetoId" />
+                        <input type="submit" value="Pausar" />
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+}
+
+
+@if (contagemPausados == true)
+{
+<h1>Projetos Pausados</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descricao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataInicio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in projetosPausados)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descricao)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DataInicio)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ProjetoId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.ProjetoId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ProjetoId">Delete</a>
+                    <form asp-action="Finalizar" method="post">
+                        <input type="hidden" name="id" value="@item?.ProjetoId" />
+                        <input type="submit" value="Finalizar" />
+                    </form>
+                    <form asp-action="Pausar" method="post">
+                        <input type="hidden" name="id" value="@item?.ProjetoId" />
+                        @if (item.Status == "Pausado")
+                        {
+                            <input type="submit" value="Ativar" />
+                        }
+                        <input type="submit" value="Pausar" />
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+}
+
+@if (contagemFinalizados == true)
+{
+    <h1>Projetos Finalizados</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descricao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataInicio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in projetosFinalizados)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descricao)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DataInicio)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ProjetoId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.ProjetoId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ProjetoId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+}
+
+@if (contagemAtivos == false && contagemPausados == false && contagemFinalizados == false)
+{
+    <h1>Não há projetos cadastrados</h1>
+}
+
+

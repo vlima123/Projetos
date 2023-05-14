@@ -1,0 +1,165 @@
+﻿@model IEnumerable<ProjetoParaProjetos.Models.Tarefa>
+
+@{
+    ViewData["Title"] = "Index";
+    var tarefasFinalizadas = Model.Where(t => t.Status == "Finalizada");
+    var tarefasNaoFinalizadas = Model.Where(t => t.Status != "Finalizada");
+
+
+    var categorias = new List<string> { "Front-End", "Trabalho", "Back-End","Data-Science", "Vestibular", "FullStack", "Computação", "Outros" };
+    var prioridades = new List<string> { "Baixa", "Média", "Alta" };
+}
+
+<form asp-action="ProcurarCategoria">
+
+    <label for="categoria">Procurar por Categoria</label>
+    <select name="categoria" id="categoria">
+        @foreach (var item in categorias)
+        {
+            <option name="categoria" value="@item">@item</option>
+        }
+    </select>
+        <button type="submit">Procurar</button>
+</form>
+
+<form asp-action="ProcurarPrioridade">
+
+    <label for="prioridade">Procurar por Categoria</label>
+    <select name="prioridade" id="prioridade">
+        @foreach (var item in prioridades)
+        {
+            <option name="prioridade" value="@item">@item</option>
+        }
+    </select>
+        <button type="submit">Procurar</button>
+</form>
+
+
+<form asp-action="ProcurarData">
+
+    <label for="data">Procurar por Data</label>
+    <input type="date" name="data" id="data">
+        <button type="submit">Procurar</button>
+</form>
+
+<h1>Em Aberto</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descricao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataCriacao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataFinal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Prioridade)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Categoria)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in tarefasNaoFinalizadas) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descricao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataCriacao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataFinal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Prioridade)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Categoria)
+            </td>
+            <td>
+                <form asp-action="Finalizar">
+
+                <input type="hidden" name="id" value="@item.TarefaId">
+
+                <button type="submit"> Finalizar</button>
+                </form>
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.TarefaId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.TarefaId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.TarefaId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<h1>Atividades Finalizadas</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descricao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataCriacao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataFinal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Prioridade)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Categoria)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in tarefasFinalizadas) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descricao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataCriacao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataFinal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Prioridade)
+            </td>   
+            <td>
+                @Html.DisplayFor(modelItem => item.Categoria)
+            </td>   
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.TarefaId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.TarefaId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.TarefaId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

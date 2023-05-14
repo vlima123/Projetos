@@ -1,0 +1,21 @@
+@model Projeto
+
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">@Model.Nome</h5>
+    <p class="card-text">@Model.Descricao</p>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">ID do Projeto: @Model.ProjetoId</li>
+    <li class="list-group-item">Data de início: @Model.DataInicio.ToShortDateString()</li>
+    <li class="list-group-item">Data de término: @Model.DataFim.ToShortDateString()</li>
+    <li class="list-group-item">Status: @Model.Status</li>
+    <li class="list-group-item">Objetivo: @Model.Objetivo</li>
+    <li class="list-group-item">Data da última atualização: @Model.Atualiacao.ToShortDateString()</li>
+    <li class="list-group-item">Selos: @Model.Selos</li>
+    <a asp-action="Edit" asp-route-id="@Model.ProjetoId">Edit</a> |
+    <a asp-action="Details" asp-route-id="@Model.ProjetoId">Details</a> |
+    <a asp-action="Delete" asp-route-id="@Model.ProjetoId">Delete</a>
+
+  </ul>
+</div>

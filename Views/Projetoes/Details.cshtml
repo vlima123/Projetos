@@ -1,0 +1,58 @@
+﻿@model ProjetoParaProjetos.Models.Projeto
+
+@{
+    ViewData["Title"] = "Details";
+    var objetivo =  ViewData["Objetivos"];
+    var Objetivo = objetivo as IEnumerable<ProjetoParaProjetos.Models.Objetivos>;
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Projeto</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Nome)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Nome)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Descricao)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Descricao)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DataInicio)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DataInicio)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Objetivo)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => Objetivo.Where(x => x.ObjetivosId == model.Objetivo.ObjetivosId).FirstOrDefault().Objetivo)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.ProjetoId">Edit</a> 
+    <a asp-action="Index">Back to List</a>
+    <form asp-action="Finalizar" method="post">
+        <input type="hidden" name="id" value="@Model?.ProjetoId" />
+        <input type="submit" value="Finalizar" />
+    </form>
+    <form asp-action="Pausar" method="post">
+        <input type="hidden" name="id" value="@Model?.ProjetoId" />
+        <input type="submit" value="Pausar" />
+    </form>
+</div>

@@ -1,0 +1,113 @@
+﻿@model FlashCard
+@{
+    ViewData["Title"] = "Create";
+
+    var projetos = (List<Projeto>)ViewData["Projetos"];
+     var notas = (List<Nota>)ViewData["Notas"];
+        var objetivos = (List<Objetivos>)ViewData["Objetivos"];
+
+    var listaReferencias = new List<string> { "Projeto", "Nota" };
+}
+
+
+<h1>Create</h1>
+
+<h4>FlashCard</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Pergunta" class="control-label"></label>
+                <input asp-for="Pergunta" class="form-control" />
+                <span asp-validation-for="Pergunta" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Resposta" class="control-label"></label>
+                <input asp-for="Resposta" class="form-control" />
+                <span asp-validation-for="Resposta" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Titulo" class="control-label"></label>
+                <input asp-for="Titulo" class="form-control" />
+                <span asp-validation-for="Titulo" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <label>Selecione o tipo:</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="tipo-select" id="projeto-radio"  value="projeto"
+                        checked>
+                    <label class="form-check-label" for="projeto-radio">
+                        Projeto
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="tipo-select" id="notas-radio"  value="notas">
+                    <label class="form-check-label" for="notas-radio">
+                        Notas
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="tipo-select" id="objetivos-radio"  value="objetivos">
+                    <label class="form-check-label" for="objetivos-radio">
+                        Objetivos
+                    </label>
+                </div>
+            </div>
+
+
+            <div class="form-group projeto-select-container" id="projeto-select-container">
+                <label asp-for="ProjetoId" class="control-label">Projetos</label>
+                <select asp-for="ProjetoId" class="form-control" id="projeto-select">
+                    @foreach (var item in projetos)
+                    {
+                        <option name="ProjetoId" value="@item.ProjetoId">@item.Nome</option>
+                    }
+                    <input type="hidden" name="Tipo" value="Projeto" />
+
+                </select>
+            </div>
+
+            <div class="form-group" id="notas-select-container" style="display: none;">
+                <label asp-for="NotaId" class="control-label">Notas</label>
+                <select asp-for="NotaId" class="form-control" id="notas-select">
+                    @foreach (var item in notas)
+                    {
+                        <option name="NotaId" value="@item.NotaId">@item.Titulo</option>
+                    }
+                </select>
+                <input type="hidden" name="Tipo" value="Nota" />
+            </div>
+
+            <div class="form-group" id="objetivos-select-container" style="display: none;">
+                <label asp-for="ObjetivosId" class="control-label">Objetivos</label>
+                <select asp-for="ObjetivosId" class="form-control" id="notas-select">
+                    @foreach (var item in objetivos)
+                    {
+                        <option name="ObjetivosId" value="@item.ObjetivosId">@item.Descricao</option>
+                    }
+                </select>
+                <input type="hidden" name="Tipo" value="Objetivo" />
+            </div>
+
+
+
+
+
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

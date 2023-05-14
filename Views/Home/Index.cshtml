@@ -1,0 +1,142 @@
+﻿@model ProjetoParaProjetos.Models.ViewModels.TarefasObjetivosProjetosViewModel
+
+@{
+    // Obter o dia atual
+    var diaAtual = DateTime.Today.Day;
+    var data = DateTime.Now;
+
+    //verificar se a hora atual esta entra 10h e 17h
+
+    var horaConfere = data.Hour >= 07 && data.Hour < 20;
+
+    // Filtrar as tarefas que foram criadas no dia atual
+    var listaTarefas = Model.Tarefas.Where(t => t.DataCriacao.Day == diaAtual).ToList();
+
+    //filtrar as tarefas que estao abertas
+
+    var listaTarefasAbertas = listaTarefas.Where(t => t.Status == "Aberta").ToList();
+
+    //lista de tarefas trabalho
+    var listaTarefasTrabalhoAbertas = listaTarefasAbertas.Where(t => t.Categoria == "Trabalho").ToList();
+
+    //Outras tarefas
+    var listaTarefasOutrasAbertas = listaTarefasAbertas.Where(t => t.Categoria != "Trabalho").ToList();
+
+    // filtrar as tarefas que foram fechadas no dia atual
+    var listaTarefasFinalizadas = Model.Tarefas.Where(t => t.DataFinal.Day == diaAtual).ToList();
+
+    // filtrar os projetos ativos
+    var listaProjetos = Model.Projetos.Where(p => p.Status == "Ativo").ToList();
+}
+
+
+
+<body>
+    <div class="container d-flex flex-column justify-content-around align-items-center"
+        style="width: auto;height: auto;">
+        <section class="py-4 py-xl-5" style="height: auto;">
+            <div class="container h-100">
+                <div class="row h-100">
+                    <div
+                        class="col-md-10 col-xl-8 text-center d-flex d-sm-flex d-md-flex justify-content-center align-items-center mx-auto justify-content-md-start align-items-md-center justify-content-xl-center">
+                        <div>
+                            <h2 class="text-uppercase fw-bold mb-3">Projeto para projetos</h2>
+                            <p class="mb-4">Cada pequena vitória é um passo em direção ao sucesso. Por mais difícil que
+                                possa parecer a jornada, cada linha de código que você escreve é uma realização.
+                                Mantenha-se perseverante e lembre-se de que o progresso é mais importante do que a
+                                perfeição.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="d-flex justify-content-center align-items-center flex-wrap">
+            @if (horaConfere == true)
+            {
+
+
+                <div class="card" style="margin: 1rem;">
+                    <div class="card-body"
+                        style="text-align: center;width: 300px;max-width: 400px;height: auto;min-height:200px">
+                        <h4 class="card-title">Tarefas do Trabalho</h4>
+                        <h6 class="text-muted card-subtitle mb-2">Abertas Hoje</h6>
+                        <ul class="list-unstyled">
+
+                            @foreach (var item in listaTarefasTrabalhoAbertas)
+                            {
+                                <li class="card-text">@item.Nome        
+                                    <form asp-controller="Tarefas" asp-action="Finalizar">
+
+                                        <input type="hidden" name="id" value="@item.TarefaId">
+
+                                        <button type="submit"> Finalizar</button>
+                                    </form>
+                                </li>
+                            }
+
+                        </ul><a class="card-link" asp-controller="Tarefas" asp-action="Index">Ver todas</a>
+                    </div>
+                </div>
+            }
+            <div class="card" style="margin: 1rem;">
+                <div class="card-body"
+                    style="text-align: center;width: 300px;max-width: 400px;height: auto;min-height:200px">
+                    <h4 class="card-title">Tarefas Pessoais</h4>
+                    <h6 class="text-muted card-subtitle mb-2">Abertas Hoje</h6>
+                    <ul class="list-unstyled">
+
+                        @foreach (var item in listaTarefasOutrasAbertas)
+                        {
+                           <li class="card-text">@item.Nome        
+                                    <form asp-controller="Tarefas" asp-action="Finalizar">
+
+                                        <input type="hidden" name="id" value="@item.TarefaId">
+
+                                        <button type="submit"> Finalizar</button>
+                                    </form>
+                                </li>
+                        }
+
+                    </ul><a class="card-link" asp-controller="Tarefas" asp-action="Index">Ver todas</a>
+                </div>
+            </div>
+
+            <div class="card" style="margin: 1rem;">
+                <div class="card-body"
+                    style="text-align: center;width: 300px;max-width: 400px;height: auto;min-height:200px">
+                    <h4 class="card-title">Objetivos</h4>
+                    <h6 class="text-muted card-subtitle mb-2">Foco</h6>
+                    <ul class="list-unstyled">
+
+                        @foreach (var item in Model.Objetivos)
+                        {
+                            <li class="card-text">@item.Objetivo</li>
+                        }
+
+                    </ul><a class="card-link" asp-controller="Objetivos" asp-action="Index">Ver todos</a>
+                </div>
+            </div>
+
+            <div class="card" style="margin: 1rem;">
+                <div class="card-body"
+                    style="text-align: center;width: 300px;max-width: 400px;height: auto;min-height:200px">
+                    <h4 class="card-title">Tarefas</h4>
+                    <h6 class="text-muted card-subtitle mb-2">Fechadas Hoje</h6>
+                    <ul class="list-unstyled">
+
+                        @foreach (var item in listaTarefasFinalizadas)
+                        {
+                            <li class="card-text">@item.Nome</li>
+                        }
+
+                    </ul><a class="card-link" asp-controller="Tarefas" asp-action="Index">Ver todas</a>
+                </div>
+            </div>
+
+
+
+        </div>
+
+    </div>
+</body>
